@@ -1,7 +1,7 @@
 <template>
     <div class="content">
         <button class="add-cart" @click="addToCart()">Add to Cart</button>
-        <div class="top-row">
+        <div class="top-row" :sample="true">
             <!-- <div class="top part" :style="[headBorderStyle]"> -->
                 <!-- Eg: conditional class binding instead of inline style binding -->
                 <!-- :class="{'sale-border':selectedRobot.head.onSale}" -->
@@ -100,6 +100,7 @@ export default {
     .part{
         img{
                 width: 165px;
+                cursor: pointer;
             }
     } 
     .top-row{
