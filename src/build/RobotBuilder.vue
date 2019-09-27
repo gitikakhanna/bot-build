@@ -1,7 +1,8 @@
 <template>
     <div class="content">
+        <button class="" @click="changesample()">Prop change</button>
         <button class="add-cart" @click="addToCart()">Add to Cart</button>
-        <div class="top-row" :sample="true">
+        <div class="top-row">
             <!-- <div class="top part" :style="[headBorderStyle]"> -->
                 <!-- Eg: conditional class binding instead of inline style binding -->
                 <!-- :class="{'sale-border':selectedRobot.head.onSale}" -->
@@ -12,7 +13,7 @@
                     <span v-if="selectedRobot.head.onSale" class="sale">Sale!</span>
                 </div>
                 <img :src="selectedRobot.head.src" title="head" /> -->
-            <PartSelector :parts="availableParts.heads" position="top" @partSelected="part => selectedRobot.head=part"/>
+            <PartSelector :parts="availableParts.heads" position="top" @partSelected="part => selectedRobot.head=part" :sample="sampleval"/>
         </div>
         <div class="middle-row">
             <PartSelector :parts="availableParts.arms" position="left" @partSelected="part => selectedRobot.leftArm=part"/>
@@ -62,7 +63,8 @@ export default {
                 rightArm: {},
                 torso: {},
                 base: {}
-            }
+            },
+            sampleval: "false"
         };
     },
     mixins:[createdHookMixin],
@@ -71,8 +73,18 @@ export default {
             const robot = this.selectedRobot;
             const cost = robot.head.cost + robot.leftArm.cost + robot.torso.cost + robot.rightArm.cost + robot.base.cost;
             this.cart.push(Object.assign({}, robot, {cost}))
+        },
+        changesample(){
+            console.log("executed");
+            if(this.sampleval == "true"){
+                this.sampleval = "false";
+            }
+            else{
+                this.sampleval = "true";
+            }
+            
+            console.log(this.sampleval);
         }
-
     },
     computed: {
         headBorderStyle(){
@@ -208,5 +220,11 @@ export default {
     }
     .cost{
         text-align: right;
+    }
+    .true{
+        display: none;
+    }
+    .false{
+        display: block;
     }
 </style>
