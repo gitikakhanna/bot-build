@@ -13,6 +13,7 @@ import SidebarBuild from './../sidebars/SidebarBuild.vue';
 
 Vue.use(Router);
 export default new Router({
+    mode: 'history',
     routes: [{
         path: '/',
         name: 'Home', // name of our route
@@ -33,7 +34,11 @@ export default new Router({
         path: '/parts/:partType/:id',
         name: 'Parts',
         component: PartInfo,
-        props: true
+        props: true,
+        beforeEnter(to, from, next){
+            const isValidId = Number.isInteger(Number(to.params.id));
+            next(isValidId); // will not redirect if id passed in url is not a number
+        }
     },
     {
         path: '/parts/browse',
