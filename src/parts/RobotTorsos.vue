@@ -2,7 +2,7 @@
     <div>
         <h2>Torsos</h2>
         The torso is the central part of your robot that holds everything.
-        <div v-for="(torso, idx) in torsos" :key="idx">
+        <div v-for="(torso, idx) in parts.torsos" :key="idx">
             <h4>{{torso.title}}</h4>
             <div>{{torso.description}}</div>
         </div>
@@ -10,14 +10,10 @@
 </template>
 
 <script>
-    import parts from './../data/parts';
+    import getPartsMixin from './get-parts-mixin';
     export default {
         name: 'RobotTorsos',
-        data(){
-            return {
-                torsos: parts.torsos,
-            }
-        }
+        mixins: [getPartsMixin]
     }
 </script>
 

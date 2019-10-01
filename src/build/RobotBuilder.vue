@@ -1,5 +1,5 @@
 <template>
-    <div class="content">
+    <div class="content" v-if="availableParts">
         <button class="" @click="changesample()">Prop change</button>
         <button class="add-cart" @click="addToCart()">Add to Cart</button>
         <div class="top-row">
@@ -27,12 +27,15 @@
 </template>
 
 <script>
-import availableParts from '../data/parts';
+// import availableParts from '../data/parts'; // no need since we used api call using axios
 import createdHookMixin from './created-hook-mixin'
 import PartSelector from './PartSelector.vue'
 
 export default {
     name: 'RobotBuilder',
+    created(){
+        this.$store.dispatch('getParts');
+    },
     beforeRouteLeave(to, from, next){
         if(this.addedToCart){
             next(true);
@@ -46,7 +49,6 @@ export default {
     },
     data(){
         return{
-            availableParts,
             addedToCart: false,
             cart: [],
             selectedRobot:{
@@ -64,7 +66,8 @@ export default {
         addToCart(){
             const robot = this.selectedRobot;
             const cost = robot.head.cost + robot.leftArm.cost + robot.torso.cost + robot.rightArm.cost + robot.base.cost;
-            this.$store.commit('addRobotToCart', Object.assign({}, robot, {cost}));
+            this.$store.dispatch('addRobotToCart', Object.assign({}, robot, {cost}))
+            .then(() => this.$router.push('/cart')); // this will commit mutation when action is dispatched
 
             //this.cart.push(Object.assign({}, robot, {cost}))
             this.addedToCart = true;
@@ -82,6 +85,9 @@ export default {
         }
     },
     computed: {
+        availableParts(){
+            return this.$store.state.robots.parts;
+        },
         headBorderStyle(){
             return{
                 border: this.selectedRobot.head.onSale ? '3px solid red':'3px solid #aaa'

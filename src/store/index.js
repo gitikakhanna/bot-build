@@ -1,16 +1,13 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import robotsModule from './modules/robots';
+import usersModule from './modules/users';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-    state:{
-        cart:[],
-
-    }, // this object will store all the data
-    mutations:{
-        addRobotToCart(state, robot){
-            state.cart.push(robot);
-        }
-    } // changes to data happens in mutations | the 1st parameter is state
+    modules: {
+        robots: robotsModule,
+        users: usersModule
+    }
 });
